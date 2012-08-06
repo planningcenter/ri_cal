@@ -1,5 +1,9 @@
 ## RI_CAL -- a new implementation of RFC2445 in Ruby
 
+[![TravisCI](https://secure.travis-ci.org/jphenow/ri_cal.png "TravisCI")](http://travis-ci.org/jphenow/ri_cal "Travis-CI RiCal")
+
+[RubyGems NOT YET]()
+
 by Jon Phenow
 Forked from https://github.com/rubyredrick/ri_cal
 
