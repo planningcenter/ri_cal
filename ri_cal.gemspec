@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
+#- 2009 Rick DeNatale, All rights reserved. Refer to the file README.txt for the license
 require File.join File.dirname(__FILE__), 'lib', 'ri_cal', 'version'
 Gem::Specification.new do |gem|
-  gem.authors       = ["Jon Phenow"]
+  gem.authors       = ["Jon Phenow, Rick DeNatale"]
   gem.email         = ["jon.phenow@tstmedia.com"]
   gem.description   = %q{A new Ruby implementation of RFC2445 iCalendar.
 
