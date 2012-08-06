@@ -3,6 +3,11 @@
 by Jon Phenow
 Forked from https://github.com/rubyredrick/ri_cal
 
+### WARNING
+
+I (Jon Phenow) have only recently forked this and am in the process of cleaning and rewriting.
+Please be **aware** that some of this README may be out of date.
+
 ## DESCRIPTION:
 
 A new Ruby implementation of RFC2445 iCalendar.
@@ -35,7 +40,7 @@ accessing methods for RiCal::Component::Event are defined in RiCal::Properties::
 
 ### Creating Calendars and Calendar Components
 
-    RiCal provides a builder DSL for creating calendars and calendar components. An example
+RiCal provides a builder DSL for creating calendars and calendar components. An example
 
 ```ruby
 RiCal.Calendar do
@@ -52,14 +57,14 @@ RiCal.Calendar do
 end
 ```
 
-    This style is for compatibility with the iCalendar and vpim to ease migration. The downside is that
-    the block is evaluated in the context of a different object which can cause surprises if the block
-    contains direct instance variable references or implicit references to self. Note that, in this
-    style, one must use 'declarative' method calls like dtstart to set values rather than more natural
-    attribute writer methods, like dtstart=
+This style is for compatibility with the iCalendar and vpim to ease migration. The downside is that
+the block is evaluated in the context of a different object which can cause surprises if the block
+contains direct instance variable references or implicit references to self. Note that, in this
+style, one must use 'declarative' method calls like dtstart to set values rather than more natural
+attribute writer methods, like dtstart=
 
-    Alternatively you can pass a block with a single argument, in this case the component being built
-    will be passed as that argument
+Alternatively you can pass a block with a single argument, in this case the component being built
+will be passed as that argument
 
 ```ruby
 RiCal.Calendar do |cal|
