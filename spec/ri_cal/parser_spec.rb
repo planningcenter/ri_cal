@@ -1,8 +1,15 @@
 #- ©2009 Rick DeNatale, All rights reserved. Refer to the file README.txt for the license
 
-require File.join(File.dirname(__FILE__), %w[.. spec_helper])
+require 'spec_helper'
 
 describe RiCal::Parser do
+  context "potentially broken ical feed" do
+    it "shouldn't fail" do
+      io = File.open File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'sample_ical_files', 'mn_twins.ics'))
+      RiCal::Parser.new(io).parse.empty?.should_not be_true
+    end
+  end
+
   context ".separate_line" do
     it "should work" do
       RiCal::Parser.new.separate_line("DTSTART;TZID=America/New_York:20090804T120000").should == {
