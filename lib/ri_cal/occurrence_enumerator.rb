@@ -244,7 +244,7 @@ module RiCal
       @exrule_property = nil
       @rdate_property = nil
       @exdate_property = nil
-      @recurrence_id_property = occurrence_start
+      @recurrence_id_property = nil
       if @dtend_property && !occurrence_end
          occurrence_end = occurrence_start + (@dtend_property - @dtstart_property)
       end
