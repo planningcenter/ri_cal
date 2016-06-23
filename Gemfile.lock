@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     ri_cal (0.8.8)
-      activesupport (~> 3.0.15)
       tzinfo
 
 GEM
@@ -26,6 +25,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 3.0.15)
   awesome_print
   rake
   ri_cal!
