@@ -209,8 +209,8 @@ module RiCal
     end
     
     # execute the block for each occurrence
-    def each(&block) # :yields: Component
-      enumeration_instance.each(&block)
+    def each(options={}, &block) # :yields: Component
+      enumeration_instance.each(options, &block)
     end
 
     # A predicate which determines whether the component has a bounded set of occurrences
