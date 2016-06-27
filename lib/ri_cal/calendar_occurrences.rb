@@ -5,30 +5,11 @@ module RiCal
       occs = recurring_subcomponents.inject([]) do |memo, collection|
         _, components = collection
 
-        # TODO: overrides contains all overrides for all UID's
-        overrides = instances(components)
-        
-        options_without_count = options.reject{|k,_|:count == k}
-
-        # find all occurrences excluding those that have an override (specific instance)
         recurrable(components).each do |component|
-          yielded = 0
-          component.each(options_without_count) do |occurrence|
-            break if yielded >= options[:count] if options[:count]
-            
-            # TODO: scope this to the UID
-            unless cancelled?(overrides, occurrence)
-              memo << occurrence
-              yielded += 1
-            end
-          end
-        end
-      
-        # add all specific instances (within range defined by options)
-        overrides.each do |override|
-          if instance = override.occurrences(options).first
-            memo << instance
-          end
+          component_instances = instances(component.uid, components)
+
+          add_occurrences_in_range_excluding_instances(memo, component, component_instances, options)
+          add_instances_in_range(memo, component_instances, options)
         end
       
         memo
@@ -38,9 +19,29 @@ module RiCal
     end
     
     private
+
+    def add_occurrences_in_range_excluding_instances(memo, component, instances, options)
+      yielded = 0
+      component.each(options.reject{|k,_|:count == k}) do |occurrence|
+        break if yielded >= options[:count] if options[:count]
+        
+        unless cancelled?(instances, occurrence)
+          memo << occurrence
+          yielded += 1
+        end
+      end
+    end
     
-    def cancelled?(overrides, occurrence)
-      overrides.find{ |i| i.recurrence_id == occurrence.dtstart }
+    def add_instances_in_range(memo, instances, options)
+      instances.each do |override|
+        if instance = override.occurrences(options).first
+          memo << instance
+        end
+      end
+    end      
+    
+    def cancelled?(instances, occurrence)
+      instances.find{ |i| i.recurrence_id == occurrence.dtstart }
     end
 
     def recurring_subcomponents
@@ -48,11 +49,11 @@ module RiCal
     end
     
     def recurrable(components)
-      components.select{|c| !c.recurrence_id}
+      components.select{|c| ! c.recurrence_id}
     end
 
-    def instances(components)
-      components.select{|c| c.recurrence_id}
+    def instances(uid, components)
+      components.select{|c| uid == c.uid && c.recurrence_id}
     end
   end
 end
