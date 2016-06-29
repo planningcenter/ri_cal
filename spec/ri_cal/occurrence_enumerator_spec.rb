@@ -38,7 +38,6 @@ TEXT
 BEGIN:VEVENT
 DTSTART:#{start}
 DTEND:#{start.gsub("T09","T10")}
-RECURRENCE-ID:#{start}
 END:VEVENT
 TEXT
           RiCal.parse_string(src).first
