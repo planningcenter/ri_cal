@@ -28,6 +28,7 @@ module RiCal
   autoload :InvalidPropertyValue, "ri_cal/invalid_property_value.rb"
   autoload :InvalidTimezoneIdentifier, "ri_cal/invalid_timezone_identifier.rb"
   autoload :OccurrenceEnumerator, "ri_cal/occurrence_enumerator.rb"
+  autoload :CalendarOccurrences, "ri_cal/calendar_occurrences.rb"
   autoload :OccurrencePeriod, "ri_cal/occurrence_period.rb"
   autoload :TimezonePeriod, "ri_cal/properties/timezone_period.rb"
   autoload :Parser, "ri_cal/parser.rb"

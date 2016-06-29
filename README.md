@@ -1,3 +1,13 @@
+## Kerkdienstgemist.nl special edition of RiCal
+
+We've added the `RiCal::Calendar#occurrences` method to return all occurrences for the 
+calendar taking recurring event instances into account. These events have the same `id` 
+as the parent event and have `recurrence_id` set to the original `dtstart` of the event 
+in the recurrence.
+
+`RiCal::Calendar#occurrences` takes the same `options` as `RiCal::Event#occurrences`
+with the same behavior.
+
 ## RI_CAL -- a new implementation of RFC2445 in Ruby
 
 [![TravisCI](https://secure.travis-ci.org/jphenow/ri_cal.png "TravisCI")](http://travis-ci.org/jphenow/ri_cal "Travis-CI RiCal")

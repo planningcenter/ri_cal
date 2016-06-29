@@ -209,8 +209,8 @@ module RiCal
     end
     
     # execute the block for each occurrence
-    def each(&block) # :yields: Component
-      enumeration_instance.each(&block)
+    def each(options={}, &block) # :yields: Component
+      enumeration_instance.each(options, &block)
     end
 
     # A predicate which determines whether the component has a bounded set of occurrences
@@ -244,7 +244,7 @@ module RiCal
       @exrule_property = nil
       @rdate_property = nil
       @exdate_property = nil
-      @recurrence_id_property = occurrence_start
+      @recurrence_id_property = nil
       if @dtend_property && !occurrence_end
          occurrence_end = occurrence_start + (@dtend_property - @dtstart_property)
       end
