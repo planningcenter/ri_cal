@@ -150,7 +150,8 @@ module RiCal
         end
       end
       
-      def bounded?
+      def bounded?(options = nil)
+        process_options(options) if options
         @rrules.bounded? || @count || @cutoff || @overlap_range
       end
       
@@ -214,8 +215,8 @@ module RiCal
     end
 
     # A predicate which determines whether the component has a bounded set of occurrences
-    def bounded?
-      enumeration_instance.bounded?
+    def bounded?(options = nil)
+      enumeration_instance.bounded?(options)
     end
 
     # Return a array whose first element is a UTC DateTime representing the start of the first
