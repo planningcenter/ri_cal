@@ -21,6 +21,10 @@ module RiCal
     private
 
     def add_occurrences_in_range_excluding_instances(memo, component, instances, options)
+      unless component.bounded?(options)
+        raise ArgumentError.new("This component is unbounded, cannot enumerate occurrences!")
+      end
+
       yielded = 0
       component.each(options.reject{|k,_|:count == k}) do |occurrence|
         break if yielded >= options[:count] if options[:count]
