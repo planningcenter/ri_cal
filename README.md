@@ -1,5 +1,12 @@
 ## Kerkdienstgemist.nl special edition of RiCal
 
+## Version 0.9.1
+
+Add detection of unbounded component in `RiCal::Calendar#occurrences`. This prevents us
+from entering into an endless loop.
+
+## Version 0.9.0
+
 We've added the `RiCal::Calendar#occurrences` method to return all occurrences for the 
 calendar taking recurring event instances into account. These events have the same `id` 
 as the parent event and have `recurrence_id` set to the original `dtstart` of the event 
