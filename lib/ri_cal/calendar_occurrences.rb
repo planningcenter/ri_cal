@@ -15,7 +15,7 @@ module RiCal
         memo
       end.sort{|a,b| a.dtstart <=> b.dtstart}
 
-      options[:count] ? occs.first(options[:count]) : occs
+      options[:count] ? occs.first([options[:count],0].max) : occs
     end
     
     private
