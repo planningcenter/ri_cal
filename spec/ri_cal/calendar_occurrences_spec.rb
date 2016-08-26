@@ -1194,4 +1194,29 @@ TEXT
        ))
     }
   end
+  
+  context "with count <= 0" do
+    subject {
+      RiCal.Calendar do |cal|
+        cal.event do |event|
+          event.dtstart = Time.parse("2016-06-27T15:00:00+02:00")
+          event.rrule   = "FREQ=WEEKLY"
+        end
+      end
+    }
+    it {
+      lambda {
+        subject.occurrences
+      }.should raise_error(/This component is unbounded/)
+    }
+    it {
+      subject.occurrences(count:-1).should be_empty
+    }
+    it {
+      subject.occurrences(count:0).should be_empty
+    }
+    it {
+      subject.occurrences(count:10).should have(10).items
+    }
+  end
 end
