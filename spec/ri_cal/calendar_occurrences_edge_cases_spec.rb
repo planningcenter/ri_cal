@@ -48,7 +48,7 @@ describe RiCal::Component::Calendar do
   end
   
   context "move last event in range to a later date outside range/count" do
-    let(:range) { { starting: Time.parse("2016-06-26"), count: 4 } }
+    let(:range) { { starting: Time.parse("2016-06-27"), count: 4 } }
     subject {
       generate_calendar(
         "Jun 26, 2016 16:30:00#FREQ=DAILY" => {
@@ -59,12 +59,12 @@ describe RiCal::Component::Calendar do
     
     its(:events) { should have(2).items }
   
-    it("should return events on 26, 27, 28 and 30th") {
+    it("should return events on 27/6, 28/6, 30/6 and 1/7") {
       subject.occurrences(range).map(&:dtstart).map(&:to_s).should eql(%w(
-        2016-06-26T16:30:00+00:00
         2016-06-27T16:30:00+00:00
         2016-06-28T16:30:00+00:00
         2016-06-30T16:30:00+00:00
+        2016-07-01T16:30:00+00:00
       ))
     }
   
