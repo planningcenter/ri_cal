@@ -5,8 +5,8 @@ require 'spec_helper'
 describe RiCal do
   describe "#parse" do
     before(:each) do
-      @mock_parser = mock("parser", :parse => [])
-      RiCal::Parser.stub!(:new).and_return(@mock_parser)
+      @mock_parser = double("parser", :parse => [])
+      RiCal::Parser.stub(:new).and_return(@mock_parser)
     end
 
     it "should create a parser using the io parameter" do
@@ -23,7 +23,7 @@ describe RiCal do
 
     it "should return the results of the parse" do
       io = StringIO.new("")
-      @mock_parser.stub!(:parse).and_return(:parse_result)
+      @mock_parser.stub(:parse).and_return(:parse_result)
       RiCal.parse(io).should == :parse_result
     end
   end
@@ -31,8 +31,8 @@ describe RiCal do
   describe "#parse_string" do
     before(:each) do
       @mock_io = :mock_io
-      StringIO.stub!(:new).and_return(@mock_io)
-      RiCal.stub!(:parse)
+      StringIO.stub(:new).and_return(@mock_io)
+      RiCal.stub(:parse)
     end
 
     it "should create a StringIO from the string" do

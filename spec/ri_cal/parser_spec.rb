@@ -6,7 +6,7 @@ describe RiCal::Parser do
   context "potentially broken ical feed" do
     it "shouldn't fail" do
       io = File.open File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'sample_ical_files', 'mn_twins.ics'))
-      RiCal::Parser.new(io).parse.empty?.should_not be_true
+      RiCal::Parser.new(io).parse.empty?.should_not be_truthy
     end
   end
 
