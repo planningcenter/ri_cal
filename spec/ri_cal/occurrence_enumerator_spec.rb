@@ -4,7 +4,7 @@
 require File.join(File.dirname(__FILE__), %w[.. spec_helper.rb])
 
 def mock_enumerator(name, next_occurrence)
-  mock(name, :next_occurrence => next_occurrence, :bounded? => true, :empty? => false)
+  double(name, :next_occurrence => next_occurrence, :bounded? => true, :empty? => false)
 end
 
 # Note that this is more of a functional spec
@@ -355,7 +355,7 @@ TEXT
       end
 
       it "should produce events whose dtstarts are all dates" do
-        @occurrences.all? {|o| o.dtstart.class == ::Date}.should be_true
+        @occurrences.all? {|o| o.dtstart.class == ::Date}.should be_truthy
       end
 
       it "should produce the right dtend values" do
@@ -371,7 +371,7 @@ TEXT
       end
 
       it "should produce events whose dtstends are all dates" do
-        @occurrences.all? {|o| o.dtend.class == ::Date}.should be_true
+        @occurrences.all? {|o| o.dtend.class == ::Date}.should be_truthy
       end
     end
     context "bounded? bug" do
