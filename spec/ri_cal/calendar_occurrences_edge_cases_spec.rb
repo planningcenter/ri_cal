@@ -156,5 +156,24 @@ describe RiCal::Component::Calendar do
     }
   
   end
+  
+  context "should return correct next occurrence" do
+    let(:range) { { starting: Time.parse("2016-06-26"), count: 1 } }
+    subject {
+      generate_calendar(
+        "Jun 26, 2016 10:00:00#FREQ=DAILY" => {
+          "Jun 26, 2016 10:00:00" => "Jun 29, 2016 09:30:00",
+          "Jun 27, 2016 10:00:00" => "Jun 28, 2016 09:30:00",
+          "Jun 28, 2016 10:00:00" => "Jun 27, 2016 09:30:00",
+          "Jun 29, 2016 10:00:00" => "Jun 26, 2016 09:30:00",
+        }
+      )
+    }
+    it("should return correct next instance") {
+      subject.occurrences(range).map(&:dtstart).map(&:to_s).should eql(%w(
+        2016-06-26T09:30:00+00:00
+      ))
+    }
+  end
 
 end
