@@ -6,10 +6,11 @@ module RiCal
         _, components = collection
 
         recurrable(components).each do |component|
-          component_instances = instances(component.uid, components)
+          component_instances = instances(component.uid, components).sort_by(&:dtstart)
 
-          add_occurrences_in_range_excluding_instances(memo, component, component_instances, options)
-          add_instances_in_range(memo, component_instances, options)
+          count = add_occurrences(memo, component, component_instances, options)
+          remaining = options[:count] ? options[:count] - count : nil
+          add_remaining_instances(memo, component_instances, options, remaining)
         end
       
         memo
@@ -20,32 +21,51 @@ module RiCal
     
     private
 
-    def add_occurrences_in_range_excluding_instances(memo, component, instances, options)
+    def add_occurrences(memo, component, instances, options)
       unless component.bounded?(options)
         raise ArgumentError.new("This component is unbounded, cannot enumerate occurrences!")
       end
 
-      yielded = 0
+      yielded_occurrences = 0
+      yielded_instances   = 0
+      
+      # enumerate occurrences of the recurring component
       component.each(options.reject{|k,_|:count == k}) do |occurrence|
-        break if yielded >= options[:count] if options[:count]
-        
-        unless cancelled?(instances, occurrence)
+        break if yielded_occurrences >= options[:count] if options[:count]
+        break if yielded_instances   >= options[:count] if options[:count]
+
+        if instance = next_instance(instances, occurrence)
+          if instance.occurrences(options).first
+            memo << instance
+            yielded_instances += 1
+          end
+        else
           memo << occurrence
-          yielded += 1
+          yielded_occurrences += 1
         end
       end
+      yielded_occurrences
     end
     
-    def add_instances_in_range(memo, instances, options)
+    def add_remaining_instances(memo, instances, options, count)
+      yielded = 0
       instances.each do |override|
+        break if yielded >= count if count
         if instance = override.occurrences(options).first
           memo << instance
+          yielded += 1
         end
       end
     end      
     
-    def cancelled?(instances, occurrence)
-      instances.find{ |i| i.recurrence_id == occurrence.dtstart }
+    def next_instance(instances, occurrence)
+      found = nil
+      instances.delete_if do |i|
+        if i.recurrence_id == occurrence.dtstart
+          found = i
+        end
+      end
+      found
     end
 
     def recurring_subcomponents
