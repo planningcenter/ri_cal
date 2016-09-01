@@ -1,6 +1,6 @@
 ## Kerkdienstgemist.nl special edition of RiCal
 
-## Next Version
+## Version 0.9.3
 
 * Optimize for case of large number of instances
 * Refactor to silence deprecation warnings
