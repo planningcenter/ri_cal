@@ -1219,4 +1219,65 @@ TEXT
       subject.occurrences(count:10).should have(10).items
     }
   end
+  
+  context "with first event changed in time" do
+    subject {
+      RiCal.parse_string(rectify_ical(<<-TEXT
+          BEGIN:VCALENDAR
+          PRODID;X-RICAL-TZSOURCE=TZINFO:-//com.denhaven2/NONSGML ri_cal gem//EN
+          CALSCALE:GREGORIAN
+          VERSION:2.0
+          BEGIN:VEVENT
+          DTEND;TZID=Europe/Amsterdam;VALUE=DATE-TIME:20160915T101000
+          DTSTART;TZID=Europe/Amsterdam;VALUE=DATE-TIME:20160915T100000
+          DTSTAMP;VALUE=DATE-TIME:20160915T090850Z
+          UID:15279167-mp3
+          SUMMARY:Dagelijks 10:00
+          RRULE:FREQ=WEEKLY;BYDAY=TH
+          CLASS:PUBLIC
+          RELATED-TO:RELTYPE=SELF:15279167
+          BEGIN:VALARM
+          TRIGGER:+PT0M
+          END:VALARM
+          END:VEVENT
+          BEGIN:VEVENT
+          DTEND;TZID=Europe/Amsterdam;VALUE=DATE-TIME:20160915T112000
+          DTSTART;TZID=Europe/Amsterdam;VALUE=DATE-TIME:20160915T111000
+          RECURRENCE-ID;TZID=Europe/Amsterdam;VALUE=DATE-TIME:20160915T100000
+          DTSTAMP;VALUE=DATE-TIME:20160915T090942Z
+          UID:15279167-mp3
+          SUMMARY:Vandaag 11:10
+          CLASS:PUBLIC
+          RELATED-TO:RELTYPE=SELF:15279168
+          RELATED-TO:RELTYPE=PARENT:15279167
+          BEGIN:VALARM
+          TRIGGER:+PT0M
+          END:VALARM
+          END:VEVENT
+          BEGIN:VTIMEZONE
+          TZID;X-RICAL-TZSOURCE=TZINFO:Europe/Amsterdam
+          BEGIN:DAYLIGHT
+          RDATE:20160327T020000
+          TZOFFSETTO:+0200
+          DTSTART;VALUE=DATE-TIME:20160327T020000
+          TZNAME:CEST
+          TZOFFSETFROM:+0100
+          END:DAYLIGHT
+          END:VTIMEZONE
+          END:VCALENDAR
+        TEXT
+      )).first
+    }
+    
+    its(:events) { should have(2).items }
+    it {
+      subject.occurrences(
+        starting: Time.parse("2016-09-15 10:59:45 +0200"), count: 3).map(&:dtstart).map(&:to_s).should eql(%w(
+          2016-09-15T11:10:00+02:00
+          2016-09-22T10:00:00+02:00
+          2016-09-29T10:00:00+02:00
+        )
+      )
+    }
+  end
 end

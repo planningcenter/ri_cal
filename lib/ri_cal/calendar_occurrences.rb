@@ -6,11 +6,10 @@ module RiCal
         _, components = collection
 
         recurrable(components).each do |component|
-          component_instances = instances(component.uid, components).sort_by(&:dtstart)
+          instances = event_instances(component.uid, components).sort_by(&:dtstart)
 
-          count = add_occurrences(memo, component, component_instances, options)
-          remaining = options[:count] ? options[:count] - count : nil
-          add_remaining_instances(memo, component_instances, options, remaining)
+          add_occurrences(memo, component, instances, options)
+          add_instances(memo, instances, options)
         end
       
         memo
@@ -26,34 +25,33 @@ module RiCal
         raise ArgumentError.new("This component is unbounded, cannot enumerate occurrences!")
       end
 
-      yielded_occurrences = 0
-      yielded_instances   = 0
+      found_occurrences = 0
+      found_instances   = 0
       
       # enumerate occurrences of the recurring component
       component.each(options.reject{|k,_|:count == k}) do |occurrence|
-        break if yielded_occurrences >= options[:count] if options[:count]
-        break if yielded_instances   >= options[:count] if options[:count]
+        break if found_occurrences >= options[:count] if options[:count]
+        break if found_instances   >= options[:count] if options[:count]
 
         if instance = next_instance(instances, occurrence)
           if instance.occurrences(options).first
             memo << instance
-            yielded_instances += 1
+            found_instances += 1
           end
         else
           memo << occurrence
-          yielded_occurrences += 1
+          found_occurrences += 1
         end
       end
-      yielded_occurrences
     end
     
-    def add_remaining_instances(memo, instances, options, count)
-      yielded = 0
+    def add_instances(memo, instances, options)
+      found = 0
       instances.each do |override|
-        break if yielded >= count if count
+        break if found >= options[:count] if options[:count]
         if instance = override.occurrences(options).first
           memo << instance
-          yielded += 1
+          found += 1
         end
       end
     end      
@@ -76,7 +74,7 @@ module RiCal
       components.select{|c| ! c.recurrence_id}
     end
 
-    def instances(uid, components)
+    def event_instances(uid, components)
       components.select{|c| uid == c.uid && c.recurrence_id}
     end
   end
