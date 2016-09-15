@@ -6,11 +6,11 @@ module RiCal
         _, components = collection
 
         recurrable(components).each do |component|
-          component_instances = instances(component.uid, components).sort_by(&:dtstart)
+          instances = event_instances(component.uid, components).sort_by(&:dtstart)
 
-          count = add_occurrences(memo, component, component_instances, options)
+          count = add_occurrences(memo, component, instances, options)
           remaining = options[:count] ? options[:count] - count : nil
-          add_remaining_instances(memo, component_instances, options, remaining)
+          add_remaining_instances(memo, instances, options, remaining)
         end
       
         memo
@@ -76,7 +76,7 @@ module RiCal
       components.select{|c| ! c.recurrence_id}
     end
 
-    def instances(uid, components)
+    def event_instances(uid, components)
       components.select{|c| uid == c.uid && c.recurrence_id}
     end
   end
