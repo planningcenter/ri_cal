@@ -25,33 +25,33 @@ module RiCal
         raise ArgumentError.new("This component is unbounded, cannot enumerate occurrences!")
       end
 
-      yielded_occurrences = 0
-      yielded_instances   = 0
+      found_occurrences = 0
+      found_instances   = 0
       
       # enumerate occurrences of the recurring component
       component.each(options.reject{|k,_|:count == k}) do |occurrence|
-        break if yielded_occurrences >= options[:count] if options[:count]
-        break if yielded_instances   >= options[:count] if options[:count]
+        break if found_occurrences >= options[:count] if options[:count]
+        break if found_instances   >= options[:count] if options[:count]
 
         if instance = next_instance(instances, occurrence)
           if instance.occurrences(options).first
             memo << instance
-            yielded_instances += 1
+            found_instances += 1
           end
         else
           memo << occurrence
-          yielded_occurrences += 1
+          found_occurrences += 1
         end
       end
     end
     
     def add_instances(memo, instances, options)
-      yielded = 0
+      found = 0
       instances.each do |override|
-        break if yielded >= options[:count] if options[:count]
+        break if found >= options[:count] if options[:count]
         if instance = override.occurrences(options).first
           memo << instance
-          yielded += 1
+          found += 1
         end
       end
     end      
