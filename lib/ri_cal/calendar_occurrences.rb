@@ -8,9 +8,8 @@ module RiCal
         recurrable(components).each do |component|
           instances = event_instances(component.uid, components).sort_by(&:dtstart)
 
-          count = add_occurrences(memo, component, instances, options)
-          remaining = options[:count] ? options[:count] - count : nil
-          add_remaining_instances(memo, instances, options, remaining)
+          add_occurrences(memo, component, instances, options)
+          add_instances(memo, instances, options)
         end
       
         memo
@@ -47,10 +46,10 @@ module RiCal
       yielded_occurrences
     end
     
-    def add_remaining_instances(memo, instances, options, count)
+    def add_instances(memo, instances, options)
       yielded = 0
       instances.each do |override|
-        break if yielded >= count if count
+        break if yielded >= options[:count] if options[:count]
         if instance = override.occurrences(options).first
           memo << instance
           yielded += 1
