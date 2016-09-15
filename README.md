@@ -1,5 +1,10 @@
 ## Kerkdienstgemist.nl special edition of RiCal
 
+## Version 0.9.4
+
+* Fix bug caused by limiting count on add_instances.
+* Various refactorings.
+
 ## Version 0.9.3
 
 * Optimize for case of large number of instances
