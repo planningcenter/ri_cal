@@ -43,7 +43,6 @@ module RiCal
           yielded_occurrences += 1
         end
       end
-      yielded_occurrences
     end
     
     def add_instances(memo, instances, options)
