@@ -200,7 +200,7 @@ module RiCal
                 n = n - 1
                 before = string[0, n]
                 after = string[n..-1]
-              end      
+              end
               [before, after.empty? ? nil : after]
             end
           end
@@ -208,10 +208,10 @@ module RiCal
 
         def fold(string) #:nodoc:
           line, remainder = *utf8_safe_split(string, 73)
-          stream.puts(line)
+          stream.puts("#{line}\r")
           while remainder
             line, remainder = *utf8_safe_split(remainder, 72)
-            stream.puts(" #{line}")
+            stream.puts(" #{line}\r")
           end
         end
 
@@ -249,7 +249,7 @@ module RiCal
           export_stream.string
         end
       end
-      
+
       alias_method :export_to, :export
 
     end

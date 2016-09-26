@@ -13,15 +13,15 @@ describe RiCal::Component do
       end
 
       it "should have the default prodid" do
-        @it.should match(%r{^PRODID;X-RICAL-TZSOURCE=TZINFO:-//com.denhaven2/NONSGML ri_cal gem//EN$})
+        @it.should match(%r{^PRODID;X-RICAL-TZSOURCE=TZINFO:-//com.denhaven2/NONSGML ri_cal gem//EN\r$})
       end
 
       it "should have the default calscale" do
-        @it.should match(%r{^CALSCALE:GREGORIAN$})
+        @it.should match(%r{^CALSCALE:GREGORIAN\r$})
       end
 
       it "should have the default icalendar version" do
-        @it.should match(%r{^VERSION:2\.0$})
+        @it.should match(%r{^VERSION:2\.0\r$})
       end
     end
 
@@ -34,7 +34,7 @@ describe RiCal::Component do
       end
 
       context "adding an exception date" do
-        
+
         before(:each) do
           @cal =  RiCal.Calendar do
             event do
@@ -52,12 +52,12 @@ describe RiCal::Component do
         it "should have a property with the right ical representation" do
           @prop.to_s.should == ";TZID=US/Eastern:19620220T144739"
         end
-        
+
         context "its ruby_value" do
           it "should have the right value" do
             @prop.ruby_value.should == [DateTime.civil(1962, 2, 20, 14, 47, 39, Rational(-5, 24))]
           end
-          
+
           it "should have the right tzid" do
             @prop.ruby_value.first.tzid.should == "US/Eastern"
           end
