@@ -203,6 +203,7 @@ URL;X-LABEL=Venue Info:http://www.hrmafestival.org
 END:VVENUE
 END:VCALENDAR
 ENDCAL
+  @cal_string.gsub!(/\n/, "\r\n")
 
   @venue_str = <<ENDVENUE
 BEGIN:VVENUE
@@ -217,12 +218,13 @@ GEO:39.546;-104.997
 URL;X-LABEL=Venue Info:http://www.hrmafestival.org
 END:VVENUE
 ENDVENUE
+    @venue_str.gsub!(/\n/, "\r\n")
   end
 
   it "should parse without error" do
     lambda {RiCal.parse_string(@cal_string)}.should_not raise_error
   end
-  
+
   it "should export correctly" do
     export = RiCal.parse_string(@cal_string).first.export
     export.should include(@venue_str)
@@ -272,16 +274,16 @@ END:VCALENDAR)
       cal = RiCal.parse_string(cal_string).first
       cal.x_wr_calname.first.should == " AFC Ajax Eredivisie wedstrijden 2010 - 2011"
     end
-    
+
   it "should define x-properties correctly" do
     calendar = RiCal.Calendar
     calendar.add_x_property 'x_wr_calname', 'Lifetracker'
-    calendar.export.should == %Q(BEGIN:VCALENDAR
-PRODID;X-RICAL-TZSOURCE=TZINFO:-//com.denhaven2/NONSGML ri_cal gem//EN
-CALSCALE:GREGORIAN
-VERSION:2.0
-X-WR-CALNAME:Lifetracker
-END:VCALENDAR
+    calendar.export.should == %Q(BEGIN:VCALENDAR\r
+PRODID;X-RICAL-TZSOURCE=TZINFO:-//com.denhaven2/NONSGML ri_cal gem//EN\r
+CALSCALE:GREGORIAN\r
+VERSION:2.0\r
+X-WR-CALNAME:Lifetracker\r
+END:VCALENDAR\r
 )
   end
 end
