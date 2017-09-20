@@ -13,7 +13,7 @@
 ## Version 0.9.2
 
 * Handle case where count is less than zero.
-  This would cause `ArgumentError: negative array size` 
+  This would cause `ArgumentError: negative array size`
 
 ## Version 0.9.1
 
@@ -22,9 +22,9 @@
 
 ## Version 0.9.0
 
-* Added the `RiCal::Calendar#occurrences` method to return all occurrences for the 
-  calendar taking recurring event instances into account. These events have the same `id` 
-  as the parent event and have `recurrence_id` set to the original `dtstart` of the event 
+* Added the `RiCal::Calendar#occurrences` method to return all occurrences for the
+  calendar taking recurring event instances into account. These events have the same `id`
+  as the parent event and have `recurrence_id` set to the original `dtstart` of the event
   in the recurrence.
 
   `RiCal::Calendar#occurrences` takes the same `options` as `RiCal::Event#occurrences`
@@ -57,7 +57,7 @@ A Google group for discussion of this library has been set up http://groups.goog
 
 ## FEATURES/PROBLEMS:
 
-* All examples of recurring events in RFC 2445 are handled. RSpec examples are provided for them. 
+* All examples of recurring events in RFC 2445 are handled. RSpec examples are provided for them.
 
 ### Components and properties
 
@@ -148,17 +148,17 @@ Event#remove_comments   # takes multiple comment string argument and removes an 
 
 RFC2445 describes three different kinds of DATE-TIME values with respect to time zones:
 
-1. date-times with a local time. These have no actual time zone, instead they are to be 
-interpreted in the local time zone of the viewer.  These floating times are used for things 
+1. date-times with a local time. These have no actual time zone, instead they are to be
+interpreted in the local time zone of the viewer.  These floating times are used for things
 like the New Years celebration which is observed at local midnight whether you happen to be
 in Paris, London, or New York.
 
-2. date-times with UTC time.  An application would either display these with an indication of 
+2. date-times with UTC time.  An application would either display these with an indication of
 the time zone, or convert them to the viewer's time zone, perhaps depending on user settings.
 
 3. date-times with a specified time zone.
 
-RiCal can be given ruby Time, DateTime, or Date objects for the value of properties requiring an 
+RiCal can be given ruby Time, DateTime, or Date objects for the value of properties requiring an
 iCalendar DATE-TIME value.  It can also be given a string
 
 Note that a date only DATE-TIME value has no time zone by definition, effectively such values float
@@ -259,7 +259,7 @@ ActiveSupport gem is not loaded, then the result will be a Ruby DateTime object,
 offset from UTC, and with the tzid property set.
 
 * Finally, if the value is attached to a property contained in a tzinfo calendar and the
-ActiveSupport gem is loaded, then the result will be an ActiveSupport::TimeWithZone with the 
+ActiveSupport gem is loaded, then the result will be an ActiveSupport::TimeWithZone with the
 proper tzid.
 
 #### RDATE, and EXDATE properties (Occurrence Lists)
