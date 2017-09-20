@@ -29,7 +29,9 @@ A Google group for discussion of this library has been set up http://groups.goog
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'rspec-collection_matchers'
-  gem.add_development_dependency 'ZenTest'
+  gem.add_development_dependency 'rspec-autotest'
+  gem.add_development_dependency 'autotest-standalone'
+  gem.add_development_dependency 'autotest-fsevent'
   gem.add_development_dependency 'awesome_print'
 
   if gem.respond_to? :specification_version then
@@ -42,4 +44,3 @@ A Google group for discussion of this library has been set up http://groups.goog
   else
   end
 end
-
