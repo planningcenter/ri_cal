@@ -1,4 +1,4 @@
-## Kerkdienstgemist.nl special edition of RiCal
+## Kerkdienstgemist.nl special version of RiCal
 
 ## Version 0.9.4
 
