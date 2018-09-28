@@ -52,7 +52,15 @@ module RiCal
         prop = finish_property
         prop ? prop.to_zulu_occurrence_range_finish_time : nil
       end
-      
+
+      def _dump(level)
+        self.to_s
+      end
+
+      def self._load(string)
+        self.parse_string(string).first
+      end
+   
     end
   end
 end
