@@ -13,7 +13,7 @@ This is a clean-slate implementation of RFC2445.
 
 A Google group for discussion of this library has been set up http://groups.google.com/group/rical_gem}
   gem.summary       = %q{a new implementation of RFC2445 in Ruby}
-  gem.homepage      = "http://github.com/jphenow/ri_cal"
+  gem.homepage      = "http://github.com/kdgm/ri_cal"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
@@ -21,6 +21,7 @@ A Google group for discussion of this library has been set up http://groups.goog
   gem.name          = "ri_cal"
   gem.require_paths = ["lib"]
   gem.version       = RiCal::VERSION
+  gem.required_ruby_version = '>= 1.9.3'
 
   gem.add_dependency 'tzinfo'
 
@@ -29,7 +30,9 @@ A Google group for discussion of this library has been set up http://groups.goog
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'rspec-collection_matchers'
-  gem.add_development_dependency 'ZenTest'
+  gem.add_development_dependency 'rspec-autotest'
+  gem.add_development_dependency 'autotest-standalone'
+  gem.add_development_dependency 'autotest-fsevent'
   gem.add_development_dependency 'awesome_print'
 
   if gem.respond_to? :specification_version then
@@ -42,4 +45,3 @@ A Google group for discussion of this library has been set up http://groups.goog
   else
   end
 end
-
