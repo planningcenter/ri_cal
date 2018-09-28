@@ -732,4 +732,23 @@ ENDCAL
       @event.dtstart.should have_floating_timezone
     end
   end
+
+  context "Marshalling" do
+    let(:dumped)     { "\x04\bIu:\x1CRiCal::Component::Event9BEGIN:VEVENT\nDTSTART;VALUE=DATE:20090704\nEND:VEVENT\n\x06:\x06ET" }
+    let(:serialized) { "BEGIN:VEVENT\nDTSTART;VALUE=DATE:20090704\nEND:VEVENT\n" }
+    it "should dump to string" do
+      @it = RiCal.Event do |evt|
+        evt.dtstart = "20090704"
+      end
+      Marshal.dump(@it).should eql(dumped)
+    end
+
+    it "should load from string" do
+      @it = RiCal.Event do |evt|
+        evt.dtstart = "20090704"
+      end
+      Marshal.load(dumped).to_s.should eql(serialized)
+    end
+  end
+
 end
