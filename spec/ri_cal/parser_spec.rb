@@ -10,6 +10,13 @@ describe RiCal::Parser do
     end
   end
 
+  context "ical feed with html entities" do
+    it "shouldn't fail" do
+      io = File.open File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'sample_ical_files', 'gcal.ics'))
+      RiCal::Parser.new(io).parse.empty?.should_not be_truthy
+    end
+  end
+
   context ".separate_line" do
     it "should work" do
       RiCal::Parser.new.separate_line("DTSTART;TZID=America/New_York:20090804T120000").should == {

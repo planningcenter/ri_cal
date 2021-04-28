@@ -11,6 +11,7 @@ require 'tzinfo'
 require 'ap'
 require 'rspec/its'
 require 'rspec/collection_matchers'
+require 'byebug'
 
 Dir.glob(File.expand_path('../support/lib/**/*.rb', __FILE__)).each { |file| require file }
 
