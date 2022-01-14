@@ -262,7 +262,7 @@ END:VCALENDAR)
   end
 end
 
-  context "X-properties" do
+context "X-properties" do
   it "should round-trip the X-WR-CALNAME property" do
     cal_string = %Q(BEGIN:VCALENDAR
 PRODID:-//Markthisdate.com\,0.7
@@ -271,9 +271,9 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME: AFC Ajax Eredivisie wedstrijden 2010 - 2011
 END:VCALENDAR)
-      cal = RiCal.parse_string(cal_string).first
-      cal.x_wr_calname.first.should == " AFC Ajax Eredivisie wedstrijden 2010 - 2011"
-    end
+    cal = RiCal.parse_string(cal_string).first
+    cal.x_wr_calname.first.should == " AFC Ajax Eredivisie wedstrijden 2010 - 2011"
+  end
 
   it "should define x-properties correctly" do
     calendar = RiCal.Calendar
@@ -284,6 +284,7 @@ CALSCALE:GREGORIAN\r
 VERSION:2.0\r
 X-WR-CALNAME:Lifetracker\r
 END:VCALENDAR\r
-)
+  )
+    end
   end
 end
