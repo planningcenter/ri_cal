@@ -4,7 +4,9 @@ module RiCal
     #
     # to see the property accessing methods for this class see the RiCal::Properties::Calendar module
     class Calendar < Component
+      include RiCal::CalendarOccurrences
       include RiCal::Properties::Calendar
+
       attr_reader :tz_source #:nodoc:
 
       def initialize(parent=nil,entity_name = nil, &init_block) #:nodoc:
@@ -171,47 +173,30 @@ module RiCal
           stream.string
         end
 
-        if RUBY_VERSION =~ /^1\.9/
-          def utf8_safe_split(string, n)
-            if string.bytesize <= n
-              [string, nil]
-            else
-              bytes = string.bytes.to_a
-              while (128..191).include?(bytes[n])
-                n = n - 1
-              end
-              before = bytes[0,n]
-              after = bytes[n..-1]
-              [before.pack("C*").force_encoding("utf-8"), after.empty? ? nil : after.pack("C*").force_encoding("utf-8")]
+        def utf8_safe_split(string, n)
+          if string.bytesize <= n
+            [string, nil]
+          else
+            bytes = string.bytes.to_a
+            while (128..191).include?(bytes[n])
+              n = n - 1
             end
+            before = bytes[0,n]
+            after = bytes[n..-1]
+            [before.pack("C*").force_encoding("utf-8"), after.empty? ? nil : after.pack("C*").force_encoding("utf-8")]
           end
-        else
-          def valid_utf8?(string)
-            string.unpack("U") rescue nil
-          end
+        end
 
-          def utf8_safe_split(string, n)
-            if string.length <= n
-              [string, nil]
-            else
-              before = string[0, n]
-              after = string[n..-1]
-              until valid_utf8?(after)
-                n = n - 1
-                before = string[0, n]
-                after = string[n..-1]
-              end      
-              [before, after.empty? ? nil : after]
-            end
-          end
+        def valid_utf8?(string)
+          string.unpack("U") rescue nil
         end
 
         def fold(string) #:nodoc:
           line, remainder = *utf8_safe_split(string, 73)
-          stream.puts(line)
+          stream.puts("#{line}\r")
           while remainder
             line, remainder = *utf8_safe_split(remainder, 72)
-            stream.puts(" #{line}")
+            stream.puts(" #{line}\r")
           end
         end
 
@@ -249,7 +234,7 @@ module RiCal
           export_stream.string
         end
       end
-      
+
       alias_method :export_to, :export
 
     end

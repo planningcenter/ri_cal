@@ -4,7 +4,7 @@
 require File.join(File.dirname(__FILE__), %w[.. .. spec_helper])
 
 describe RiCal::Component::Event do
-  
+
   context "with change management properties" do
     it "should use zulu time for all change management datetime properties" do
       new_york_offset = Rational(-1, 6)
@@ -21,7 +21,7 @@ END:VEVENT
 "
     end
   end
-  
+
   context ".finish_time" do
     it "should be the end of the start day for an event with a date dtstart and no dtend or duration" do
       @it = RiCal.Event do |evt|
@@ -29,7 +29,7 @@ END:VEVENT
       end
       @it.finish_time.should == DateTime.parse("20090704T235959")
     end
-    
+
     it "should be the end of the end day for an event with a date dtstart and a dtend" do
       @it = RiCal.Event do |evt|
         evt.dtstart = "20090704"
@@ -37,14 +37,14 @@ END:VEVENT
       end
       @it.finish_time.should == DateTime.parse("20090706T235959")
     end
-    
+
     it "should be the start time for an event with a datetime dtstart and no dtend or duration" do
       @it = RiCal.Event do |evt|
         evt.dtstart = "20090704T013000Z"
       end
       @it.finish_time.should == DateTime.parse("20090704T013000Z")
     end
-    
+
     it "should be the end time for an event with a datetime dtend" do
       @it = RiCal.Event do |evt|
         evt.dtstart = "20090704"
@@ -52,7 +52,7 @@ END:VEVENT
       end
       @it.finish_time.should == DateTime.parse("20090706T120000")
     end
-    
+
     it "should be the end time for an event with a datetime dtstart and a duration" do
       @it = RiCal.Event do |evt|
         evt.dtstart = "20090704T120000Z"
@@ -60,7 +60,7 @@ END:VEVENT
       end
       @it.finish_time.should == DateTime.parse("20090704T133000Z")
     end
-    
+
     it "should uset the  timezone of dtstart when event has a duration" do
       @it = RiCal.Event do |evt|
         evt.dtstart = "TZID=Australia/Sydney:20090712T200000"
@@ -69,7 +69,7 @@ END:VEVENT
       @it.finish_time.should == DateTime.parse("2009-07-12T21:00:00+10:00")
     end
   end
-  
+
   context ".before_range?" do
     context "with a Date dtstart and no dtend" do
       before(:each) do
@@ -77,15 +77,15 @@ END:VEVENT
           evt.dtstart = "20090704"
         end
       end
-      
+
       it "should be false if the range start is a date before the start date" do
         @it.before_range?([Date.parse("20090703"), :anything]).should_not be
       end
-      
+
       it "should be false if the range start is the start date" do
         @it.before_range?([Date.parse("20090704"), :anything]).should_not be
       end
-      
+
       it "should be true if the range start is a date after the start date" do
         @it.before_range?([Date.parse("20090705"), :anything]).should be
       end
@@ -98,15 +98,15 @@ END:VEVENT
           evt.dtend = "20090706"
         end
       end
-      
+
       it "should be false if the range start is a date before the end date" do
         @it.before_range?([Date.parse("20090705"), :anything]).should_not be
       end
-      
+
       it "should be false if the range start is the end date" do
         @it.before_range?([Date.parse("20090706"), :anything]).should_not be
       end
-      
+
       it "should be true if the range start is a date after the end date" do
         @it.before_range?([Date.parse("20090707"), :anything]).should be
       end
@@ -124,7 +124,7 @@ END:VEVENT
         end
       end
     end
-    
+
     it "should not fail" do
       lambda {@it.export}.should_not raise_error
     end
@@ -299,7 +299,7 @@ END:VEVENT
 
   context "with an rrule" do
     before(:each) do
-      @it = RiCal::Component::Event.parse_string("BEGIN:VEVENT\nRRULE:FREQ=DAILY\nEND:VEVENT").first
+      @it = RiCal::Component::Event.parse_string("BEGIN:VEVENT\r\nRRULE:FREQ=DAILY\r\nEND:VEVENT").first
     end
 
     it "should have an array of rrules" do
@@ -440,7 +440,7 @@ END:VEVENT
             @event.zulu_occurrence_range_finish_time.should == @event.zulu_occurrence_range_start_time
           end
         end
-        
+
         context "when the dtstart is a date" do
           it "should be the utc of end of the same day as start_time in the westermost time zone" do
             @event.dtstart = "20090525"
@@ -557,42 +557,42 @@ END:VEVENT
 
     it "should cause a VTIMEZONE to be included for a dtstart with a local timezone" do
       @it.dtstart = date_time_with_tzinfo_zone(DateTime.parse("April 22, 2009 17:55"), "America/New_York")
-      unfold(@it.export).should match(/BEGIN:VTIMEZONE\nTZID;X-RICAL-TZSOURCE=TZINFO:America\/New_York\n/)
+      unfold(@it.export).should match(/BEGIN:VTIMEZONE\r\nTZID;X-RICAL-TZSOURCE=TZINFO:America\/New_York\r\n/)
     end
 
     it "should properly format dtstart with a UTC date-time" do
       @it.dtstart = DateTime.parse("April 22, 2009 1:23:45").set_tzid("UTC")
-      unfold(@it.export).should match(/^DTSTART;VALUE=DATE-TIME:20090422T012345Z$/)
+      unfold(@it.export).should match(/^DTSTART;VALUE=DATE-TIME:20090422T012345Z\r$/)
     end
 
     it "should properly format dtstart with a floating date-time" do
       @it.dtstart = DateTime.parse("April 22, 2009 1:23:45").with_floating_timezone
-      unfold(@it.export).should match(/^DTSTART;VALUE=DATE-TIME:20090422T012345$/)
+      unfold(@it.export).should match(/^DTSTART;VALUE=DATE-TIME:20090422T012345\r$/)
     end
 
     it "should properly format dtstart with a local time zone" do
       @it.dtstart = date_time_with_tzinfo_zone(DateTime.parse("April 22, 2009 17:55"), "America/New_York")
-      unfold(@it.export).should match(/^DTSTART;TZID=America\/New_York;VALUE=DATE-TIME:20090422T175500$/)
+      unfold(@it.export).should match(/^DTSTART;TZID=America\/New_York;VALUE=DATE-TIME:20090422T175500\r$/)
     end
 
     it "should properly format dtstart with a date" do
       @it.dtstart = Date.parse("April 22, 2009")
-      unfold(@it.export).should match(/^DTSTART;VALUE=DATE:20090422$/)
+      unfold(@it.export).should match(/^DTSTART;VALUE=DATE:20090422\r$/)
     end
 
     it "should properly fold on export when the description contains a carriage return" do
       @it.description = "Weather report looks nice, 80 degrees and partly cloudy, so following Michael's suggestion, let's meet at the food court at Crossroads:\n\rhttp://www.shopcrossroadsplaza.c...\n"
       export_string = @it.export
-      export_string.should match(%r(^DESCRIPTION:Weather report looks nice\\, 80 degrees and partly cloudy\\, so$))
-      export_string.should match(%r(^  following Michael's suggestion\\, let's meet at the food court at Crossr$))
-      export_string.should match(%r(^ oads:\\nhttp://www\.shopcrossroadsplaza.c\.\.\.\\n$))
+      export_string.should match(%r(^DESCRIPTION:Weather report looks nice\\, 80 degrees and partly cloudy\\, so\r$))
+      export_string.should match(%r(^  following Michael's suggestion\\, let's meet at the food court at Crossr\r$))
+      export_string.should match(%r(^ oads:\\nhttp://www\.shopcrossroadsplaza.c\.\.\.\\n\r$))
     end
 
     it "should properly fold on export when the description contains multi-byte UTF-8 Characters" do
       @it.description = "Juin 2009 <<Alliance Francaise Reunion>> lieu Café périferôl"
       export_string = @it.export
-      export_string.should match(%r(^DESCRIPTION:Juin 2009 <<Alliance Francaise Reunion>> lieu Café périfer$))
-      export_string.should match(%r(^ ôl$))
+      export_string.should match(%r(^DESCRIPTION:Juin 2009 <<Alliance Francaise Reunion>> lieu Café périfer\r$))
+      export_string.should match(%r(^ ôl\r$))
     end
   end
 
@@ -732,4 +732,23 @@ ENDCAL
       @event.dtstart.should have_floating_timezone
     end
   end
+
+  context "Marshalling" do
+    let(:dumped)     { "\x04\bIu:\x1CRiCal::Component::Event9BEGIN:VEVENT\nDTSTART;VALUE=DATE:20090704\nEND:VEVENT\n\x06:\x06ET" }
+    let(:serialized) { "BEGIN:VEVENT\nDTSTART;VALUE=DATE:20090704\nEND:VEVENT\n" }
+    it "should dump to string" do
+      @it = RiCal.Event do |evt|
+        evt.dtstart = "20090704"
+      end
+      Marshal.dump(@it).should eql(dumped)
+    end
+
+    it "should load from string" do
+      @it = RiCal.Event do |evt|
+        evt.dtstart = "20090704"
+      end
+      Marshal.load(dumped).to_s.should eql(serialized)
+    end
+  end
+
 end
