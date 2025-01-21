@@ -25,7 +25,7 @@ A Google group for discussion of this library has been set up http://groups.goog
 
   gem.add_dependency 'tzinfo'
 
-  gem.add_development_dependency 'activesupport', "~> 3.0.15"
+  gem.add_development_dependency 'activesupport', "~> 3.2.22"
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rspec-its'
